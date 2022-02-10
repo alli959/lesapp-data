@@ -1,0 +1,18 @@
+org: alli959
+app: lesapp-data
+service: lesapp-data
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+  iam:
+    role: arn:aws:iam::797132616636:role/Lesapp-Admin-Role
+      
+functions:
+  speak:
+    handler: handler.speak
+    events:
+      - http: 
+          path: speak
+          method: post
+          cors: true
