@@ -52,7 +52,7 @@ module.exports.speak = (event, context, callback) => {
       let data_Karl = response.data;
       let audioStream_Karl = data_Karl.AudioStream;
       let key_Karl = prefix + typeOfData[pollyParams1.VoiceId] + context.awsRequestId + '_Karl' + '.mp3';
-      let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_text' + '.mp3';
+      let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_text' + 'txt';
       polly.synthesizeSpeech(pollyParams2)
         .on("success", function (response) {
 
