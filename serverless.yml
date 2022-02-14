@@ -18,7 +18,8 @@ functions:
           cors: true
   get:
     handler: handler.get
+    events:
       - http:
-        path: get
-        method: get
-        cors: true
+          path: get
+          method: get
+          cors: true

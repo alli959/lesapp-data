@@ -92,6 +92,12 @@
               "LogGroupName": "/aws/lambda/lesapp-data-dev-speak"
             }
           },
+          "GetLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/lesapp-data-dev-get"
+            }
+          },
           "EnterpriseLogAccessIamRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -129,6 +135,12 @@
                               "SpeakLogGroup",
                               "Arn"
                             ]
+                          },
+                          {
+                            "Fn::GetAtt": [
+                              "GetLogGroup",
+                              "Arn"
+                            ]
                           }
                         ]
                       }
@@ -145,7 +157,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1644781516209-2022-02-13T19:45:16.209Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1644848775849-2022-02-14T14:26:15.849Z/lesapp-data.zip"
               },
               "Handler": "s_speak.handler",
               "Runtime": "nodejs12.x",
@@ -158,14 +170,44 @@
               "SpeakLogGroup"
             ]
           },
-          "SpeakLambdaVersionjrABQ55lLwyJCC2ggbnLFgCeTWbkfAxP69JKPjQNtNs": {
+          "GetLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/lesapp-data/dev/1644848775849-2022-02-14T14:26:15.849Z/lesapp-data.zip"
+              },
+              "Handler": "s_get.handler",
+              "Runtime": "nodejs12.x",
+              "FunctionName": "lesapp-data-dev-get",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Role": "arn:aws:iam::797132616636:role/Lesapp-Admin-Role"
+            },
+            "DependsOn": [
+              "GetLogGroup"
+            ]
+          },
+          "SpeakLambdaVersionkDXIIijc0wPVBgUOtyksDCixUJIullBTyM3pK9YDX0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SpeakLambdaFunction"
               },
-              "CodeSha256": "SGBq4MjTucQRfw4WK0dZDGGZPpsStZniFBXZcaCNe0I="
+              "CodeSha256": "OXRCD41HJV5HGaQ2OsQ3d3oTwGYNIXXKrq1QbrjWx2A="
+            }
+          },
+          "GetLambdaVersionV45IzZb6lBcbVIpT76SsW6H04FHFxICtcrTnBAgXs": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetLambdaFunction"
+              },
+              "CodeSha256": "OXRCD41HJV5HGaQ2OsQ3d3oTwGYNIXXKrq1QbrjWx2A="
             }
           },
           "ApiGatewayRestApi": {
@@ -190,6 +232,21 @@
                 ]
               },
               "PathPart": "speak",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceGet": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "get",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -234,6 +291,51 @@
               },
               "ResourceId": {
                 "Ref": "ApiGatewayResourceSpeak"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodGetOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceGet"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -286,7 +388,53 @@
               "SpeakLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1644781510048": {
+          "ApiGatewayMethodGetGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceGet"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1644848770515": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -296,7 +444,9 @@
             },
             "DependsOn": [
               "ApiGatewayMethodSpeakOptions",
-              "ApiGatewayMethodSpeakPost"
+              "ApiGatewayMethodGetOptions",
+              "ApiGatewayMethodSpeakPost",
+              "ApiGatewayMethodGetGet"
             ]
           },
           "SpeakLambdaPermissionApiGateway": {
@@ -305,6 +455,43 @@
               "FunctionName": {
                 "Fn::GetAtt": [
                   "SpeakLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetLambdaFunction",
                   "Arn"
                 ]
               },
@@ -445,7 +632,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1644781516209-2022-02-13T19:45:16.209Z/custom-resources.zip"
+                "S3Key": "serverless/lesapp-data/dev/1644848775849-2022-02-14T14:26:15.849Z/custom-resources.zip"
               },
               "FunctionName": "lesapp-data-dev-custom-resource-apigw-cw-role",
               "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -470,6 +657,16 @@
               "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
               "LogGroupName": {
                 "Ref": "SpeakLogGroup"
+              }
+            }
+          },
+          "CWLSubFilterGetLogGroupEuWest1": {
+            "Type": "AWS::Logs::SubscriptionFilter",
+            "Properties": {
+              "DestinationArn": "arn:aws:logs:eu-west-1:802587217904:destination:d568e117-023f-4511-babe-23ddbd7d59ff#DNFvm7G6qNnCYR96nJ#lesapp-data#dev",
+              "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
+              "LogGroupName": {
+                "Ref": "GetLogGroup"
               }
             }
           },
@@ -507,10 +704,19 @@
           "SpeakLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SpeakLambdaVersionjrABQ55lLwyJCC2ggbnLFgCeTWbkfAxP69JKPjQNtNs"
+              "Ref": "SpeakLambdaVersionkDXIIijc0wPVBgUOtyksDCixUJIullBTyM3pK9YDX0"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-SpeakLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetLambdaVersionV45IzZb6lBcbVIpT76SsW6H04FHFxICtcrTnBAgXs"
+            },
+            "Export": {
+              "Name": "sls-lesapp-data-dev-GetLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -665,7 +871,42 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "SpeakLambdaVersionjrABQ55lLwyJCC2ggbnLFgCeTWbkfAxP69JKPjQNtNs"
+        "versionLogicalId": "SpeakLambdaVersionkDXIIijc0wPVBgUOtyksDCixUJIullBTyM3pK9YDX0"
+      },
+      "get": {
+        "handler": "s_get.handler",
+        "events": [
+          {
+            "http": {
+              "path": "get",
+              "method": "get",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "lesapp-data-dev-get",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "GetLambdaVersionV45IzZb6lBcbVIpT76SsW6H04FHFxICtcrTnBAgXs"
       }
     },
     "configValidationMode": "warn",
@@ -691,7 +932,7 @@
     "artifact": "D:\\lesapp\\TTS-Service\\backend\\.serverless\\lesapp-data.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/lesapp-data/dev/1644781516209-2022-02-13T19:45:16.209Z",
+    "artifactDirectoryName": "serverless/lesapp-data/dev/1644848775849-2022-02-14T14:26:15.849Z",
     "artifact": "lesapp-data.zip"
   }
 }

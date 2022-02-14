@@ -51,7 +51,7 @@ module.exports.speak = (event, context, callback) => {
       let data_Karl = response.data;
       let audioStream_Karl = data_Karl.AudioStream;
       let key_Karl = prefix + typeOfData[pollyParams1.VoiceId] + context.awsRequestId + '_Karl' + '.mp3';
-      let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_text' + 'txt';
+      let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_text' + '.txt';
       polly.synthesizeSpeech(pollyParams2)
         .on("success", function (response) {
 
@@ -223,13 +223,10 @@ module.exports.get = (event, context, callback) => {
   let s3Bucket = 'lesapp-data';
   var params = {
     Bucket: s3Bucket, /* required */
-    Delimiter: 'STRING_VALUE',
-    EncodingType: url,
-    RequestPayer: requester
   };
-  s3.listObjects(params, function(err, data) {
-    if (err) console.log(err, err.stack); // an error occurred
-    else     console.log(data);           // successful response
-  });
+  s3.listObjectsV2(params)
+    .on('success', function(response) {
+      console.log("response",response)
+    })
 
 }
