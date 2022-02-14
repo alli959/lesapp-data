@@ -217,16 +217,40 @@ module.exports.speak = (event, context, callback) => {
 
 
 module.exports.get = (event, context, callback) => {
-  let data = JSON.parse(event.body);
+  let data = JSON.parse(event.query);
   let prefix = folder + typeOfGame[data.typeofgame];
   //define prefix where to save the file
   let s3Bucket = 'lesapp-data';
   var params = {
-    Bucket: s3Bucket, /* required */
+    Bucket: s3Bucket,
+    /* required */
   };
   s3.listObjectsV2(params)
-    .on('success', function(response) {
-      console.log("response",response)
+    .on('success', function (response) {
+      console.log("response", response)
     })
+    .on("complete", function (response) {
+        console.log("S3 PUT COMPLETE");
+        callback(null, {
+          statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+          body: JSON.stringify(response.data)
+        });
+      }
+      .on("error", function (err) {
+        callback(null, {
+          statusCode: 500,
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+          body: JSON.stringify({
+            "there was an error synthesizing Speech Karl": err
+          })
+        });
+      })
+      .send()
 
+    )
 }

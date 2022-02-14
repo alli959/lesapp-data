@@ -142,7 +142,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1644850561502-2022-02-14T14:56:01.502Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1644851402828-2022-02-14T15:10:02.828Z/lesapp-data.zip"
         },
         "Handler": "s_speak.handler",
         "Runtime": "nodejs12.x",
@@ -162,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1644850561502-2022-02-14T14:56:01.502Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1644851402828-2022-02-14T15:10:02.828Z/lesapp-data.zip"
         },
         "Handler": "s_get.handler",
         "Runtime": "nodejs12.x",
@@ -175,24 +175,24 @@
         "GetLogGroup"
       ]
     },
-    "SpeakLambdaVersionsAGWsqQqPOuAqm2f1wshMLXzepjzjEFDiQPG2WncmZc": {
+    "SpeakLambdaVersion0UXp7zpv2w2dNcSCc6T4ZI9ur2AWWkKWP1aXU7eo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SpeakLambdaFunction"
         },
-        "CodeSha256": "srz3KRhGgA9VPe8igj4wFTbdwwIQJFwF2ixGKwCR37Q="
+        "CodeSha256": "1bDnDH0PSHeaIP5Wnp1juEEwvzE8sdF05JwgcW/zt/c="
       }
     },
-    "GetLambdaVersion7EYsne7Ry0b4ZjnHfzs1sdDzS9ouiWQaBzBTDNX9IgE": {
+    "GetLambdaVersionfHUPuVzLcRPfbzhoz5KYMtRQI26wbogD5ppUZ5DMY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetLambdaFunction"
         },
-        "CodeSha256": "srz3KRhGgA9VPe8igj4wFTbdwwIQJFwF2ixGKwCR37Q="
+        "CodeSha256": "1bDnDH0PSHeaIP5Wnp1juEEwvzE8sdF05JwgcW/zt/c="
       }
     },
     "ApiGatewayRestApi": {
@@ -419,7 +419,7 @@
         "GetLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1644850556319": {
+    "ApiGatewayDeployment1644851397083": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -617,7 +617,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1644850561502-2022-02-14T14:56:01.502Z/custom-resources.zip"
+          "S3Key": "serverless/lesapp-data/dev/1644851402828-2022-02-14T15:10:02.828Z/custom-resources.zip"
         },
         "FunctionName": "lesapp-data-dev-custom-resource-apigw-cw-role",
         "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -689,7 +689,7 @@
     "SpeakLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SpeakLambdaVersionsAGWsqQqPOuAqm2f1wshMLXzepjzjEFDiQPG2WncmZc"
+        "Ref": "SpeakLambdaVersion0UXp7zpv2w2dNcSCc6T4ZI9ur2AWWkKWP1aXU7eo"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-SpeakLambdaFunctionQualifiedArn"
@@ -698,7 +698,7 @@
     "GetLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetLambdaVersion7EYsne7Ry0b4ZjnHfzs1sdDzS9ouiWQaBzBTDNX9IgE"
+        "Ref": "GetLambdaVersionfHUPuVzLcRPfbzhoz5KYMtRQI26wbogD5ppUZ5DMY"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-GetLambdaFunctionQualifiedArn"
