@@ -16,3 +16,9 @@ functions:
           path: speak
           method: post
           cors: true
+  get:
+    handler: handler.get
+      - http:
+        path: get
+        method: get
+        cors: true

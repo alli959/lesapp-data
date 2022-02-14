@@ -215,3 +215,11 @@ module.exports.speak = (event, context, callback) => {
     })
     .send();
 };
+
+
+module.exports.get = (event, context, callback) => {
+  let data = JSON.parse(event.body);
+  let prefix = folder + typeOfGame[data.typeofgame];
+  //define prefix where to save the file
+
+}

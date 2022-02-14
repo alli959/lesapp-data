@@ -145,7 +145,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1644449725068-2022-02-09T23:35:25.068Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1644781516209-2022-02-13T19:45:16.209Z/lesapp-data.zip"
               },
               "Handler": "s_speak.handler",
               "Runtime": "nodejs12.x",
@@ -158,14 +158,14 @@
               "SpeakLogGroup"
             ]
           },
-          "SpeakLambdaVersiontxzRz5yX5IOxdWt6RoByyqf8692GS5wRb1yZJjYlA": {
+          "SpeakLambdaVersionjrABQ55lLwyJCC2ggbnLFgCeTWbkfAxP69JKPjQNtNs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SpeakLambdaFunction"
               },
-              "CodeSha256": "i10V8LOb+zJk6eCzGwu8GVjeYNpiH+pj2KowxZYVMPk="
+              "CodeSha256": "SGBq4MjTucQRfw4WK0dZDGGZPpsStZniFBXZcaCNe0I="
             }
           },
           "ApiGatewayRestApi": {
@@ -286,7 +286,7 @@
               "SpeakLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1644449719044": {
+          "ApiGatewayDeployment1644781510048": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -445,7 +445,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1644449725068-2022-02-09T23:35:25.068Z/custom-resources.zip"
+                "S3Key": "serverless/lesapp-data/dev/1644781516209-2022-02-13T19:45:16.209Z/custom-resources.zip"
               },
               "FunctionName": "lesapp-data-dev-custom-resource-apigw-cw-role",
               "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -507,7 +507,7 @@
           "SpeakLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SpeakLambdaVersiontxzRz5yX5IOxdWt6RoByyqf8692GS5wRb1yZJjYlA"
+              "Ref": "SpeakLambdaVersionjrABQ55lLwyJCC2ggbnLFgCeTWbkfAxP69JKPjQNtNs"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-SpeakLambdaFunctionQualifiedArn"
@@ -665,7 +665,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "SpeakLambdaVersiontxzRz5yX5IOxdWt6RoByyqf8692GS5wRb1yZJjYlA"
+        "versionLogicalId": "SpeakLambdaVersionjrABQ55lLwyJCC2ggbnLFgCeTWbkfAxP69JKPjQNtNs"
       }
     },
     "configValidationMode": "warn",
@@ -691,7 +691,7 @@
     "artifact": "D:\\lesapp\\TTS-Service\\backend\\.serverless\\lesapp-data.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/lesapp-data/dev/1644449725068-2022-02-09T23:35:25.068Z",
+    "artifactDirectoryName": "serverless/lesapp-data/dev/1644781516209-2022-02-13T19:45:16.209Z",
     "artifact": "lesapp-data.zip"
   }
 }
