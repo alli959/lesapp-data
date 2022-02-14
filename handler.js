@@ -27,7 +27,7 @@ module.exports.speak = (event, context, callback) => {
   let data = JSON.parse(event.body);
   let prefix = folder + typeOfGame[data.typeofgame];
   //define prefix where to save the file
-  if (data.typeofgame !== "words") {
+  if (data.typeofgame !== "letters") {
     prefix += typeOfDifficulty[data.typeofdifficulty];
   }
 
