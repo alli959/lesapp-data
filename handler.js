@@ -1,8 +1,14 @@
+const {
+  performance
+} = require('perf_hooks');
+
 let AWS = require("aws-sdk");
+const {
+  assert
+} = require('console');
 let polly = new AWS.Polly();
 let s3 = new AWS.S3();
 let folder = "data/";
-
 let typeOfGame = {
   "letters": "letters/",
   "sentences": "sentences/",
@@ -19,6 +25,9 @@ let typeOfData = {
   "Dora": "Dora/",
   "Text": "Text/"
 }
+
+
+
 
 
 
@@ -51,7 +60,7 @@ module.exports.speak = (event, context, callback) => {
       let data_Karl = response.data;
       let audioStream_Karl = data_Karl.AudioStream;
       let key_Karl = prefix + typeOfData[pollyParams1.VoiceId] + context.awsRequestId + '_Karl' + '.mp3';
-      let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_text' + '.txt';
+      let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_Text' + '.txt';
       polly.synthesizeSpeech(pollyParams2)
         .on("success", function (response) {
 
@@ -215,42 +224,172 @@ module.exports.speak = (event, context, callback) => {
     .send();
 };
 
+module.exports.get = async (event) => {
 
-module.exports.get = (event, context, callback) => {
-  let data = JSON.parse(event.query);
-  let prefix = folder + typeOfGame[data.typeofgame];
+  function messurePromise(fn) {
+    let start = performance.now();
+    fn();
+    return performance.now() - start;
+  }
+
+
+  var promiseArr = [];
+  var filenames = [];
+  var finalArr = [];
+  let response;
+  let query = event.queryStringParameters;
   //define prefix where to save the file
   let s3Bucket = 'lesapp-data';
-  var params = {
-    Bucket: s3Bucket,
-    /* required */
-  };
-  s3.listObjectsV2(params)
-    .on('success', function (response) {
-      console.log("response", response)
-    })
-    .on("complete", function (response) {
-        console.log("S3 PUT COMPLETE");
-        callback(null, {
-          statusCode: 200,
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          },
-          body: JSON.stringify(response.data)
-        });
-      }
-      .on("error", function (err) {
-        callback(null, {
-          statusCode: 500,
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          },
-          body: JSON.stringify({
-            "there was an error synthesizing Speech Karl": err
-          })
-        });
-      })
-      .send()
 
-    )
+  var params = {}
+  if (query.typeofgame === 'letters') {
+    params = {
+      Bucket: s3Bucket,
+      Prefix: `data/${query.typeofgame}/`
+      /* required */
+    };
+  } else {
+    params = {
+      Bucket: s3Bucket,
+      Prefix: `data/${query.typeofgame}/${query.typeofdifficulty}/`
+    }
+  }
+  var output = {};
+
+  var data;
+  try {
+    data = await s3.listObjectsV2(params).promise();
+  } catch (err) {
+    throw err;
+  }
+
+  // data.then((res) => {
+  //   return {
+  //   headers: {
+  //     "Access-Control-Allow-Origin": "*",
+  //     "Content-Type": 'application/json',
+  //     "charset": "utf-8"
+  //   },
+  //   statusCode: 200,
+  //   body: JSON.stringify(res.Contents)
+  // }
+  // });
+
+  for (let i = 0; i < data.Contents.length; i++) {
+    const tempContent = data.Contents[i].Key; // 'data/<typeofgame>/<typeofdifficulty>/<dataDir>/<filename>_<datadir>.<file extension>',
+    let tempContentArr = tempContent.split('/'); // ['data','<typeofgame>','<typeofdifficulty>','<dataDir>','<filename>_<datadir>.<file extension>']
+    let key = tempContentArr[tempContentArr.length - 1]; // '<filename>_<datadir>.<file extension>'
+    if (key) {
+      let filename_type = key.split('.'); // ['<filename>_<datadir>', '<file extension>']
+      let filename = filename_type[0]; // '<filename>_<datadir>'
+      let id = filename.split('_'); // ['<filename>','<datadir>']
+      // ids push
+
+      if (!(id[0] in output)) {
+        output[id[0]] = {
+          "Dora": "",
+          "Karl": "",
+          "Text": ""
+        }
+      }
+
+      if (id[1] === 'Text') {
+        let s3params = {
+          Bucket: s3Bucket,
+          Key: params.Prefix + id[1] + '/' + key
+        }
+        let value = s3.getObject(s3params).promise();
+        filenames.push(id[0]);
+        promiseArr.push(value);
+      } else {
+        output[id[0]][id[1]] = 'https://lesapp-data.s3.eu-west-1.amazonaws.com/' + tempContent;
+      }
+    }
+  }
+
+  await Promise.all(promiseArr).then(function (d) {
+    for (let i = 0; i < filenames.length; i++) {
+      let content = output[filenames[i]];
+      content.Text = d[i].Body.toString('utf8');
+
+      console.log("contant is ===<", content);
+      finalArr.push(content);
+    }
+
+  })
+
+  response = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": 'application/json',
+      "charset": "utf-8"
+    },
+    statusCode: 200,
+    body: JSON.stringify(finalArr)
+  }
+
+
+  return response;
+
+};
+
+
+module.exports.save = async (event, context, callback) => {
+  let data = JSON.parse(event.body);
+  let username = data.username;
+  let typeoffile = data.typeoffile; /// Correct, Incorrect, Manual_Correct, Manual_Incorrect
+  let question = data.question;
+  let answer = data.answer;
+  let audio = data.audio;
+
+
+  console.log("username is" + data);
+  console.log("typeoffile is" + typeoffile);
+  console.log("question is" + question);
+  console.log("answer is" + answer);
+  console.log("audio is" + audio);
+
+  var file = File()
+
+  let prefix = `users/${username}/${typeoffile}/`;
+  let text = `question: ${question}\nanswer: ${answer}`;
+  let audioKey = `${prefix}${context.awsRequestId}.wav`
+  let textKey = `${prefix}${context.awsRequestId}.txt`
+  
+  let s3AudioParams = {
+    Bucket: 'lesapp-data',
+    Key: audioKey,
+    Body: audio
+  }
+
+  let s3TextParams = {
+    Bucket: 'lesapp-data',
+    Key: textKey,
+    Body: text
+  }
+
+  try {
+    await s3.putObject(s3AudioParams).promise();
+    await s3.putObject(s3TextParams).promise();
+    callback(null, {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({
+        'success': 'successfully saved the files'
+      })
+    })
+  } catch(err) {
+    callback(null, {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({
+        "there was an error $err": err
+      })
+    })
+  }
+
 }
