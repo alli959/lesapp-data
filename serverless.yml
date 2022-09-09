@@ -12,9 +12,9 @@ provider:
 # package:
 #   patterns:
   
-plugins:
-  - serverless-s3-local
-  - serverless-offline
+# plugins:
+  # - serverless-s3-local
+  # - serverless-offline
   # - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
   # - serverless-plugin-include-dependencies
 
