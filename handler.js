@@ -23,12 +23,568 @@ let typeOfDifficulty = {
 let typeOfData = {
   "Karl": "Karl/",
   "Dora": "Dora/",
-  "Text": "Text/"
+  "Text": "Text/",
+  "TextKey": "TextKey/"
 }
 
 
 
+module.exports.delete = async (event, context, callback) => {
+  let s3Bucket = 'lesapp-data';
+  let query = event.queryStringParameters;
+  let id = query.id;
+  let typeofgame = query.typeofgame;
+  let typeofdifficulty = query.typeofdifficulty;
+  let doraLoc = ``;
+  let karlLoc = ``;
+  let textLoc = ``;
+  let textKeyLoc = ``;
 
+  if (typeofgame === 'letters') {
+    doraLoc = `data/${typeofgame}/Dora/${id}_Dora.mp3`;
+    karlLoc = `data/${typeofgame}/Karl/${id}_Karl.mp3`;
+    textLoc = `data/${typeofgame}/Text/${id}_Text.txt`;
+    textKeyLoc = `data/${typeofgame}/TextKey/${id}_TextKey.txt`;
+  } else {
+    doraLoc = `data/${typeofgame}/${typeofdifficulty}/Dora/${id}_Dora.mp3`;
+    karlLoc = `data/${typeofgame}/${typeofdifficulty}/Karl/${id}_Karl.mp3`;
+    textLoc = `data/${typeofgame}/${typeofdifficulty}/Text/${id}_Text.txt`;
+    textKeyLoc = `data/${typeofgame}/${typeofdifficulty}/TextKey/${id}_TextKey.txt`;
+  }
+
+
+
+  let paramsDora = {
+    Bucket: s3Bucket,
+    Key: doraLoc
+  };
+  let paramsKarl = {
+    Bucket: s3Bucket,
+    Key: karlLoc
+  };
+  let paramsText = {
+    Bucket: s3Bucket,
+    Key: textLoc
+  };
+  let paramsTextKey = {
+    Bucket: s3Bucket,
+    Key: textKeyLoc
+  };
+
+
+
+  try {
+    await Promise.all([
+      s3.getObject(paramsDora).promise(),
+      s3.getObject(paramsKarl).promise(),
+      s3.getObject(paramsText).promise(),
+      s3.getObject(paramsTextKey).promise()
+    ]).then(async (data) => {
+      console.log("data is =>", data);
+      await Promise.all([
+        s3.deleteObject(paramsDora).promise(),
+        s3.deleteObject(paramsKarl).promise(),
+        s3.deleteObject(paramsText).promise(),
+        s3.deleteObject(paramsTextKey).promise()
+      ]).then((deletedata) => {
+        console.log(deletedata);
+        callback(null, {
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+          body: JSON.stringify(deletedata)
+        });
+      }).catch(async (err) => {
+        let paramsDoraBody = {
+          Bucket: s3Bucket,
+          Key: doraLoc,
+          Body: data[0].Body
+        };
+        let paramsKarlBody = {
+          Bucket: s3Bucket,
+          Key: karlLoc,
+          Body: data[1].Body
+        };
+        let paramsTextBody = {
+          Bucket: s3Bucket,
+          Key: textLoc,
+          Body: data[2].Body.toString('utf8')
+        };
+        let paramsTextKeyBody = {
+          Bucket: s3Bucket,
+          Key: textKeyLoc,
+          Body: data[3].Body.toString('utf8')
+        };
+
+
+
+
+        await Promise.all([
+          s3.putObject(paramsDoraBody).promise(),
+          s3.putObject(paramsKarlBody).promise(),
+          s3.putObject(paramsTextBody).promise(),
+          s3.putObject(paramsTextKeyBody).promise()
+        ]).then((putdata) => {
+          console.log(putdata);
+          callback(null, {
+            statusCode: 400,
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            },
+            body: JSON.stringify(putdata)
+          });
+        }).catch((err) => {
+          console.log(err);
+          callback(null, {
+            statusCode: 500,
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            },
+            body: JSON.stringify("Villa gat ekki lagfært sig sjálf, látið vita!")
+          });
+        });
+
+        console.log(err);
+        callback(null, {
+          statusCode: 500,
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+          body: JSON.stringify(err)
+        });
+      });
+    }).catch((err) => {
+
+      console.log(err);
+      callback(null, {
+        statusCode: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify(err)
+      });
+    });
+  } catch (err) {
+    console.log("there was an error deleting s3 object", err);
+    let response = {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": 'application/json',
+        "charset": "utf-8"
+      },
+      statusCode: 400,
+      body: JSON.stringify({
+        "message": "Þetta tókst ekki"
+      })
+    }
+
+    return response;
+  }
+
+  let response = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": 'application/json',
+      "charset": "utf-8"
+    },
+    statusCode: 200,
+    body: JSON.stringify({
+      "message": "Þetta tókst"
+    })
+  }
+
+
+  return response;
+
+
+}
+
+module.exports.update = async (event, context, callback) => {
+  console.log("predata");
+  let s3Bucket = 'lesapp-data';
+  let data = JSON.parse(event.body);
+  let id = data.id;
+  let typeofgame = data.typeofgame;
+  let typeofdifficulty = data.typeofdifficulty;
+  let text = data.text;
+  console.log("text is =>", text);
+  let textKey = data.textkey;
+  console.log("textKey is =>", textKey);
+  let doraLoc = ``;
+  let karlLoc = ``;
+  let textLoc = ``;
+  let textKeyLoc = ``;
+
+  if (typeofgame === 'letters') {
+    doraLoc = `data/${typeofgame}/Dora/${id}_Dora.mp3`;
+    karlLoc = `data/${typeofgame}/Karl/${id}_Karl.mp3`;
+    textLoc = `data/${typeofgame}/Text/${id}_Text.txt`;
+    textKeyLoc = `data/${typeofgame}/TextKey/${id}_TextKey.txt`;
+  } else {
+    doraLoc = `data/${typeofgame}/${typeofdifficulty}/Dora/${id}_Dora.mp3`;
+    karlLoc = `data/${typeofgame}/${typeofdifficulty}/Karl/${id}_Karl.mp3`;
+    textLoc = `data/${typeofgame}/${typeofdifficulty}/Text/${id}_Text.txt`;
+    textKeyLoc = `data/${typeofgame}/${typeofdifficulty}/TextKey/${id}_TextKey.txt`;
+  }
+
+  let paramsDora = {
+    Bucket: s3Bucket,
+    Key: doraLoc
+  };
+  let paramsKarl = {
+    Bucket: s3Bucket,
+    Key: karlLoc
+  };
+  let paramsText = {
+    Bucket: s3Bucket,
+    Key: textLoc
+  };
+  let paramsTextKey = {
+    Bucket: s3Bucket,
+    Key: textKeyLoc
+  };
+
+
+
+  const pollyParams1 = {
+    OutputFormat: "mp3",
+    Text: '<speak>' + data.textkey + '</speak>',
+    VoiceId: "Dora",
+    TextType: "ssml"
+  };
+
+  const pollyParams2 = {
+    OutputFormat: "mp3",
+    Text: '<speak>' + data.textkey + '</speak>',
+    VoiceId: "Karl",
+    TextType: "ssml"
+  };
+
+
+
+  await Promise.all([
+    polly.synthesizeSpeech(pollyParams1).promise(),
+    polly.synthesizeSpeech(pollyParams2).promise()
+  ]).then(async (data) => {
+    console.log("data is => ", data);
+    let paramsDoraBody = {
+      Bucket: s3Bucket,
+      Key: doraLoc,
+      Body: data[0].AudioStream
+    };
+    let paramsKarlBody = {
+      Bucket: s3Bucket,
+      Key: karlLoc,
+      Body: data[1].AudioStream
+    };
+    let paramsTextBody = {
+      Bucket: s3Bucket,
+      Key: textLoc,
+      Body: text
+    };
+    let paramsTextKeyBody = {
+      Bucket: s3Bucket,
+      Key: textKeyLoc,
+      Body: textKey
+    };
+    await Promise.all([
+      s3.putObject(paramsDoraBody).promise(),
+      s3.putObject(paramsKarlBody).promise(),
+      s3.putObject(paramsTextBody).promise(),
+      s3.putObject(paramsTextKeyBody).promise()
+    ]).then((putdata) => {
+      
+      // 3. Getting a signed URL for the saved mp3 file and text
+      let doraUrl = s3.getSignedUrl('getObject', paramsDora);
+      let karlUrl = s3.getSignedUrl('getObject', paramsKarl);
+      let textUrl = s3.getSignedUrl('getObject', paramsText);
+      let textKeyUrl = s3.getSignedUrl('getObject', paramsTextKey);
+
+
+
+      callback(null, {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({
+          "doraUrl": doraUrl,
+          "karlUrl": karlUrl,
+          text: text,
+          textKey: textKey,
+        })
+      });
+    }).catch((err) => {
+      console.log("Villa gat ekki lagfært sig sjálf, látið vita!",err);
+      callback(null, {
+        statusCode: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify("Villa gat ekki lagfært sig sjálf, látið vita!")
+      });
+    });
+  }).catch((err) => {
+    console.log("Villa að sækja hljóðbút frá Polly",err);
+    callback(null, {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({
+        "message": "villa að sækja hljóðbút frá polly"
+      })
+    });
+  });
+}
+
+
+module.exports.createtextkey = async (event, context, callback) => {
+  var promiseArr = [];
+  var filenames = [];
+  var finalArr = [];
+  let response;
+  let query = event.queryStringParameters;
+  //define prefix where to save the file
+  let s3Bucket = 'lesapp-data';
+
+  let params1 = {
+    Bucket: s3Bucket,
+    Prefix: `data/letters/Text/`
+  }
+  let params2 = {
+    Bucket: s3Bucket,
+    Prefix: `data/words/easy/Text/`
+  }
+
+  let params3 = {
+    Bucket: s3Bucket,
+    Prefix: `data/words/medium/Text/`
+  }
+  let params4 = {
+    Bucket: s3Bucket,
+    Prefix: `data/sentences/easy/Text/`
+  }
+  let params5 = {
+    Bucket: s3Bucket,
+    Prefix: `data/sentences/medium/Text/`
+  }
+
+  let data1 = await s3.listObjectsV2(params1).promise();
+  let data2 = await s3.listObjectsV2(params2).promise();
+  let data3 = await s3.listObjectsV2(params3).promise();
+  let data4 = await s3.listObjectsV2(params4).promise();
+  let data5 = await s3.listObjectsV2(params5).promise();
+
+
+  for (let i = 0; i < data1.Contents.length; i++) {
+    const tempContent = data1.Contents[i].Key;
+    let tempContentArr = tempContent.split("/");
+    let key = tempContentArr[tempContentArr.length - 1];
+    let filename_type = key.split(".");
+    let filename = filename_type[0];
+    let id = filename.split("_")[0];
+
+
+
+    let postParams = {
+      Bucket: s3Bucket,
+      Key: 'data/letters/Text/' + key,
+    }
+    let value = s3.getObject(postParams).promise();
+    let finalvalue = await Promise.resolve(value);
+    let text = finalvalue.Body.toString('utf-8');
+
+
+    let textKeyParams = {
+      Bucket: s3Bucket,
+      Key: 'data/letters/' + typeOfData.TextKey + id + '_TextKey' + '.txt',
+      Body: text
+    }
+
+    console.log("textKeyParams is =>", textKeyParams);
+    try {
+      await s3.putObject(textKeyParams).promise();
+      console.log("managed to put s3 object to the bucket");
+    } catch (err) {
+      console.log("there was an error putting s3 object to bucket", err);
+    }
+
+
+  }
+
+  for (let i = 0; i < data2.Contents.length; i++) {
+    const tempContent = data2.Contents[i].Key;
+    let tempContentArr = tempContent.split("/");
+    let key = tempContentArr[tempContentArr.length - 1];
+    let filename_type = key.split(".");
+    let filename = filename_type[0];
+    let id = filename.split("_")[0];
+    let postParams = {
+      Bucket: s3Bucket,
+      Key: 'data/words/easy/Text/' + key,
+    }
+    let value = s3.getObject(postParams).promise();
+    let finalvalue = await Promise.resolve(value);
+    let text = finalvalue.Body.toString('utf-8');
+    console.log("text in words 1 are =>", text);
+
+    let textKeyParams = {
+      Bucket: s3Bucket,
+      Key: 'data/words/easy/' + typeOfData.TextKey + id + '_TextKey' + '.txt',
+      Body: text
+    }
+    try {
+      await s3.putObject(textKeyParams).promise();
+      console.log("managed to put s3 object to the bucket");
+    } catch (err) {
+      console.log("there was an error putting s3 object to bucket", err);
+    }
+
+  }
+
+  for (let i = 0; i < data3.Contents.length; i++) {
+    const tempContent = data3.Contents[i].Key;
+    let tempContentArr = tempContent.split("/");
+    let key = tempContentArr[tempContentArr.length - 1];
+    let filename_type = key.split(".");
+    let filename = filename_type[0];
+    let id = filename.split("_")[0];
+
+    let postParams = {
+      Bucket: s3Bucket,
+      Key: 'data/words/medium/Text/' + key,
+    }
+    let value = s3.getObject(postParams).promise();
+    let finalvalue = await Promise.resolve(value);
+    let text = finalvalue.Body.toString('utf-8');
+
+    let textKeyParams = {
+      Bucket: s3Bucket,
+      Key: 'data/words/medium/' + typeOfData.TextKey + id + '_TextKey' + '.txt',
+      Body: text
+    }
+    try {
+      await s3.putObject(textKeyParams).promise();
+      console.log("managed to put s3 object to the bucket");
+    } catch (err) {
+      console.log("there was an error putting s3 object to bucket", err);
+    }
+
+  }
+
+  for (let i = 0; i < data4.Contents.length; i++) {
+    const tempContent = data4.Contents[i].Key;
+    let tempContentArr = tempContent.split("/");
+    let key = tempContentArr[tempContentArr.length - 1];
+    let filename_type = key.split(".");
+    let filename = filename_type[0];
+    let id = filename.split("_")[0];
+    let postParams = {
+      Bucket: s3Bucket,
+      Key: 'data/sentences/easy/Text/' + key,
+    }
+    let value = s3.getObject(postParams).promise();
+    let finalvalue = await Promise.resolve(value);
+    let text = finalvalue.Body.toString('utf-8');
+
+    let textKeyParams = {
+      Bucket: s3Bucket,
+      Key: 'data/sentences/easy/' + typeOfData.TextKey + id + '_TextKey' + '.txt',
+      Body: text
+    }
+    try {
+      await s3.putObject(textKeyParams).promise();
+      console.log("managed to put s3 object to the bucket");
+    } catch (err) {
+      console.log("there was an error putting s3 object to bucket", err);
+    }
+
+  }
+
+  for (let i = 0; i < data5.Contents.length; i++) {
+
+    const tempContent = data5.Contents[i].Key;
+    let tempContentArr = tempContent.split("/");
+    let key = tempContentArr[tempContentArr.length - 1];
+    let filename_type = key.split(".");
+    let filename = filename_type[0];
+    let id = filename.split("_")[0];
+
+
+    let postParams = {
+      Bucket: s3Bucket,
+      Key: 'data/sentences/medium/Text/' + key,
+    }
+    let value = s3.getObject(postParams).promise();
+    let finalvalue = await Promise.resolve(value);
+    let text = finalvalue.Body.toString('utf-8');
+
+    let textKeyParams = {
+      Bucket: s3Bucket,
+      Key: 'data/sentences/medium/' + typeOfData.TextKey + id + '_TextKey' + '.txt',
+      Body: text
+    }
+    try {
+      await s3.putObject(textKeyParams).promise();
+      console.log("managed to put s3 object to the bucket");
+    } catch (err) {
+      console.log("there was an error putting s3 object to bucket", err);
+    }
+  }
+
+  callback(null, {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    },
+    body: JSON.stringify({
+      'success': 'successfully saved the files'
+    })
+  })
+
+
+
+}
+
+module.exports.listen = (event, context, callback) => {
+
+  let data = JSON.parse(event.body);
+  let audiostream;
+
+  let pollyparams = {
+    OutputFormat: "mp3",
+    Text: '<speak>' + data.textkey + '</speak>',
+    VoiceId: data.voiceid,
+    TextType: "ssml"
+  }
+  polly.synthesizeSpeech(pollyparams)
+    .on("success", function (response) {
+      audiostream = response.data.AudioStream;
+      callback(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify([audiostream])
+      });
+
+    })
+    .on("error", function (err) {
+      console.info("there was an error listening to text", err);
+      console.log("there was an error listening to text", err);
+      callback(null, {
+        statusCode: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({
+          "there was an error listening to text": err
+        })
+      });
+    })
+    .send()
+
+}
 
 
 
@@ -43,16 +599,18 @@ module.exports.speak = (event, context, callback) => {
 
   const pollyParams1 = {
     OutputFormat: "mp3",
-    Text: data.text,
-    VoiceId: "Karl"
+    Text: '<speak>' + data.textkey + '</speak>',
+    VoiceId: "Karl",
+    TextType: "ssml"
   };
 
   const pollyParams2 = {
     OutputFormat: "mp3",
-    Text: data.text,
-    VoiceId: "Dora"
+    Text: '<speak>' + data.textkey + '</speak>',
+    VoiceId: "Dora",
+    TextType: "ssml"
   };
-  // 1. Getting the audio stream for the text that user entered
+  // 1. Getting the audio stream from the text that user entered
   polly.synthesizeSpeech(pollyParams1)
     .on("success", function (response) {
       let s3Bucket = 'lesapp-data';
@@ -61,6 +619,7 @@ module.exports.speak = (event, context, callback) => {
       let audioStream_Karl = data_Karl.AudioStream;
       let key_Karl = prefix + typeOfData[pollyParams1.VoiceId] + context.awsRequestId + '_Karl' + '.mp3';
       let key_Text = prefix + typeOfData["Text"] + context.awsRequestId + '_Text' + '.txt';
+      let key_TextKey = prefix + typeOfData["TextKey"] + context.awsRequestId + '_TextKey' + '.txt';
       polly.synthesizeSpeech(pollyParams2)
         .on("success", function (response) {
 
@@ -84,7 +643,12 @@ module.exports.speak = (event, context, callback) => {
           let params_Text = {
             Bucket: s3Bucket,
             Key: key_Text,
-            Body: pollyParams1.Text
+            Body: data.text
+          };
+          let params_Text_Key = {
+            Bucket: s3Bucket,
+            Key: key_TextKey,
+            Body: data.textkey
           };
 
 
@@ -98,55 +662,83 @@ module.exports.speak = (event, context, callback) => {
                   s3.putObject(params_Text)
                     .on("success", function (response) {
                       console.log("S3 PUT text SUCCESS");
-                    })
-                    .on("complete", function () {
-                      console.log("S3 PUT COMPLETE");
-                      let s3params_Karl = {
-                        Bucket: s3Bucket,
-                        Key: key_Karl,
-                      };
-                      let s3params_Dora = {
-                        Bucket: s3Bucket,
-                        Key: key_Dora,
-                      }
-                      let s3params_Text = {
-                        Bucket: s3Bucket,
-                        Key: key_Text,
-                      }
-                      // 3. Getting a signed URL for the saved mp3 file and text
-                      let url_Karl = s3.getSignedUrl("getObject", s3params_Karl);
-                      let url_Dora = s3.getSignedUrl("getObject", s3params_Dora);
-                      let url_Text = s3.getSignedUrl("getObject", s3params_Text);
-                      // Sending the result back to the user
-                      console.info("these are the S3 PARAMS =>", s3params_Karl, s3params_Dora, s3params_Text);
-                      console.info("this is the url", url_Karl, url_Dora, url_Text);
-                      let result_Karl = {
-                        bucket: s3Bucket,
-                        key: key_Karl,
-                        url: url_Karl
-                      };
+                      s3.putObject(params_Text_Key)
+                        .on("success", function (response) {
+                          console.log("S3 PUT text key SUCCESS");
+                        })
+                        .on("complete", function () {
+                          console.log("S3 PUT COMPLETE");
+                          let s3params_Karl = {
+                            Bucket: s3Bucket,
+                            Key: key_Karl,
+                          };
+                          let s3params_Dora = {
+                            Bucket: s3Bucket,
+                            Key: key_Dora,
+                          }
+                          let s3params_Text = {
+                            Bucket: s3Bucket,
+                            Key: key_Text,
+                          }
+                          let s3params_Text_Key = {
+                            Bucket: s3Bucket,
+                            Key: key_TextKey,
+                          }
+                          // 3. Getting a signed URL for the saved mp3 file and text
+                          let url_Karl = s3.getSignedUrl("getObject", s3params_Karl);
+                          let url_Dora = s3.getSignedUrl("getObject", s3params_Dora);
+                          let url_Text = s3.getSignedUrl("getObject", s3params_Text);
+                          let url_TextKey = s3.getSignedUrl("getObject", s3params_Text_Key);
+                          // Sending the result back to the user
+                          console.info("these are the S3 PARAMS =>", s3params_Karl, s3params_Dora, s3params_Text);
+                          console.info("this is the url", url_Karl, url_Dora, url_Text);
+                          let result_Karl = {
+                            bucket: s3Bucket,
+                            key: key_Karl,
+                            url: url_Karl
+                          };
 
-                      let result_Dora = {
-                        bucket: s3Bucket,
-                        key: key_Dora,
-                        url: url_Dora
-                      };
+                          let result_Dora = {
+                            bucket: s3Bucket,
+                            key: key_Dora,
+                            url: url_Dora
+                          };
 
-                      let result_Text = {
-                        bucket: s3Bucket,
-                        key: key_Text,
-                        url: url_Text
-                      };
+                          let result_Text = {
+                            bucket: s3Bucket,
+                            key: key_Text,
+                            url: url_Text
+                          };
+                          let result_Text_Key = {
+                            bucket: s3Bucket,
+                            key: key_TextKey,
+                            url: url_TextKey
+                          };
 
-                      let result = [result_Karl, result_Dora, result_Text];
+                          let result = [result_Karl, result_Dora, result_Text, result_Text_Key];
 
-                      callback(null, {
-                        statusCode: 200,
-                        headers: {
-                          "Access-Control-Allow-Origin": "*"
-                        },
-                        body: JSON.stringify(result)
-                      });
+                          callback(null, {
+                            statusCode: 200,
+                            headers: {
+                              "Access-Control-Allow-Origin": "*"
+                            },
+                            body: JSON.stringify(result)
+                          });
+                        })
+                        .on("error", function (err) {
+                          console.info("there was an error putting text_key", err);
+                          console.log("there was an error putting text_key", err);
+                          callback(null, {
+                            statusCode: 500,
+                            headers: {
+                              "Access-Control-Allow-Origin": "*"
+                            },
+                            body: JSON.stringify({
+                              "there was an error putting text": err
+                            })
+                          });
+                        })
+                        .send()
                     })
                     .on("error", function (err) {
                       console.info("there was an error putting text", err);
@@ -263,17 +855,7 @@ module.exports.get = async (event) => {
     throw err;
   }
 
-  // data.then((res) => {
-  //   return {
-  //   headers: {
-  //     "Access-Control-Allow-Origin": "*",
-  //     "Content-Type": 'application/json',
-  //     "charset": "utf-8"
-  //   },
-  //   statusCode: 200,
-  //   body: JSON.stringify(res.Contents)
-  // }
-  // });
+
 
   for (let i = 0; i < data.Contents.length; i++) {
     const tempContent = data.Contents[i].Key; // 'data/<typeofgame>/<typeofdifficulty>/<dataDir>/<filename>_<datadir>.<file extension>',
@@ -289,7 +871,8 @@ module.exports.get = async (event) => {
         output[id[0]] = {
           "Dora": "",
           "Karl": "",
-          "Text": ""
+          "Text": "",
+          "TextKey": ""
         }
       }
 
@@ -307,15 +890,29 @@ module.exports.get = async (event) => {
     }
   }
 
-  await Promise.all(promiseArr).then(function (d) {
+  await Promise.all(promiseArr).then(async function (d) {
     for (let i = 0; i < filenames.length; i++) {
       let content = output[filenames[i]];
       content.Text = d[i].Body.toString('utf8');
+      if (query.istextkey) {
+        let dataArr = content.Dora.split('/');
+        console.log("dataarr is", dataArr);
+        dataArr[dataArr.length - 2] = 'TextKey';
+        dataArr[dataArr.length - 1] = dataArr[dataArr.length - 1].split('_')[0] + '_TextKey.txt';
+        let s3params = {
+          Bucket: s3Bucket,
+          Key: params.Prefix + 'TextKey/' + dataArr[dataArr.length - 1]
+        }
+        let k = await s3.getObject(s3params).promise();
+        content.TextKey = k.Body.toString('utf8');
+        finalArr.push(content);
+      } else {
+        console.log("contant is ===<", content);
+        finalArr.push(content);
+      }
 
-      console.log("contant is ===<", content);
-      finalArr.push(content);
+
     }
-
   })
 
   response = {
@@ -355,7 +952,7 @@ module.exports.save = async (event, context, callback) => {
   let text = `question: ${question}\nanswer: ${answer}`;
   let audioKey = `${prefix}${context.awsRequestId}.wav`
   let textKey = `${prefix}${context.awsRequestId}.txt`
-  
+
   let s3AudioParams = {
     Bucket: 'lesapp-data',
     Key: audioKey,
@@ -380,7 +977,7 @@ module.exports.save = async (event, context, callback) => {
         'success': 'successfully saved the files'
       })
     })
-  } catch(err) {
+  } catch (err) {
     callback(null, {
       statusCode: 500,
       headers: {

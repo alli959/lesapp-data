@@ -1,4 +1,3 @@
-
 org: alli959
 app: lesapp-data
 service: lesapp-data
@@ -8,22 +7,21 @@ provider:
   region: eu-west-1
   iam:
     role: arn:aws:iam::797132616636:role/Lesapp-Admin-Role
-  
+
 # package:
 #   patterns:
-  
-# plugins:
-  # - serverless-s3-local
-  # - serverless-offline
-  # - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
-  # - serverless-plugin-include-dependencies
 
-  
+# plugins:
+# - serverless-s3-local
+# - serverless-offline
+# - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
+# - serverless-plugin-include-dependencies
+
 functions:
   speak:
     handler: handler.speak
     events:
-      - http: 
+      - http:
           path: speak
           method: post
           cors: true
@@ -41,7 +39,6 @@ functions:
   confirmSignUp:
     handler: auth.confirmSignUp
 
-
   save:
     handler: handler.save
     timeout: 15
@@ -50,28 +47,3 @@ functions:
           path: save
           method: post
           cors: true
-          # authorizer: auth # execute this before posts.create!
-# Auth:
-#   Authorizers:
-#     MyCognitoAuth:
-#       AuthorizationScopes:
-#         - scope1
-#         - scope2
-#       UserPoolArn:
-#         Fn::GetAtt:
-#           - MyCognitoUserPool
-#           - Arn
-#       Identity:
-#         Header: MyAuthorizationHeader
-#         ValidationExpression: myauthvalidationexpression
-  # auth:
-  #   handler: auth.firebase
-  #   timeout: 15
-  #   events:
-  #     - http:
-  #         path: firebase
-  #         method: any
-  #         cors: true
-  #         authorizer: arn:aws:lambda:eu-west-1:797132616636:function:lesapp-data-dev-auth
-
-          
