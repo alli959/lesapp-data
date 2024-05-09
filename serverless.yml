@@ -12,9 +12,6 @@ provider:
 # package:
 #   patterns:
 
-plugins:
-  - serverless-offline
-  - serverless-plugin-include-dependencies
 
 
 functions:
