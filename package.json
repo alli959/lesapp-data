@@ -1,5 +1,16 @@
 {
+  "name": "lesapp-data",
+  "version": "1.0.0",
+  "description": "Serverless application for handling data operations.",
+  "main": "handler.js",
   "dependencies": {
+    "aws-sdk": "^2.1030.0",
+    "axios": "^0.27.2",
     "dotenv": "^16.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node handler.js",
+    "deploy": "serverless deploy"
   }
 }
