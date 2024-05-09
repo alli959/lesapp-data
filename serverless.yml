@@ -2,8 +2,10 @@ useDotenv: true
 org: alli959
 app: lesapp-data
 service: lesapp-data
+profile: 
 provider:
-  name: aws
+  name: serverless-admin
+  profile: serverless-admin
   runtime: nodejs16.x
   region: eu-west-1
   iam:
