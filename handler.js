@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+
 const {
   performance
 } = require('perf_hooks');
@@ -26,6 +29,57 @@ let typeOfData = {
   "Text": "Text/",
   "TextKey": "TextKey/"
 }
+
+const axios = require('axios'); // for making requests to the API
+
+module.exports.generateImage = async (event, context, callback) => {
+  const text = JSON.parse(event.body).text; // Assume the text to be turned into an image is sent in the request body
+
+  // Call the OpenAI API
+  const openAiResponse = await axios.post(
+    'https://api.openai.com/v1/images/generations',
+    {
+      model: "image-generation-model-id", // Replace with the actual model ID
+      prompt: text,
+      n: 1,
+      size: "1024x1024"
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` // Replace with your actual OpenAI API key
+      }
+    }
+  );
+
+  console.log("openAiResponse", openAiResponse);
+
+  const imageBuffer = openAiResponse.data.data[0].url; // Adjust according to the actual response structure
+
+  // Save the image to S3
+  const s3 = new AWS.S3();
+  const s3params = {
+    Bucket: 'lesapp-data', // Your S3 Bucket name
+    Key: `generated_images/${context.awsRequestId}.png`, // Example Key
+    Body: Buffer.from(imageBuffer, 'base64'), // Assuming the image is returned as base64
+    ContentType: 'image/png'
+  };
+
+  try {
+    await s3.upload(s3params).promise();
+    callback(null, {
+      statusCode: 200,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ message: "Image generated and uploaded successfully!" })
+    });
+  } catch (err) {
+    console.error('Upload failed:', err);
+    callback(null, {
+      statusCode: 500,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ message: "Failed to upload image" })
+    });
+  }
+};
 
 
 
