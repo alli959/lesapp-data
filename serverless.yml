@@ -5,7 +5,7 @@ service: lesapp-data
 profile: 
 provider:
   name: serverless-admin
-  profile: serverless-admin
+  profile: lesapp-admin
   runtime: nodejs16.x
   region: eu-west-1
   iam:
