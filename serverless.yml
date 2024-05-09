@@ -1,3 +1,4 @@
+useDotenv: true
 org: alli959
 app: lesapp-data
 service: lesapp-data
