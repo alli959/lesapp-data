@@ -4,12 +4,12 @@ app: lesapp-data
 service: lesapp-data
 profile: 
 provider:
-  name: serverless-admin
-  profile: Lesapp-Admin-Role
+  name: aws
   runtime: nodejs16.x
   region: eu-west-1
   iam:
     role: arn:aws:iam::797132616636:role/Lesapp-Admin-Role
+    
 
 # package:
 #   patterns:
