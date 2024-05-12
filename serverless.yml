@@ -48,6 +48,16 @@ functions:
           method: post
           cors: true
 
+  listen:
+    handler: handler.listen
+    timeout: 15
+    events:
+      - http:
+          path: listen
+          method: post
+          cors: true
+          
+
   generateImage:
     handler: handler.generateImage
     timeout: 30

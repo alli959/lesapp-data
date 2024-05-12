@@ -206,7 +206,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/lesapp-data.zip"
               },
               "Handler": "s_speak.handler",
               "Runtime": "nodejs16.x",
@@ -226,7 +226,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/lesapp-data.zip"
               },
               "Handler": "s_get.handler",
               "Runtime": "nodejs16.x",
@@ -246,7 +246,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/lesapp-data.zip"
               },
               "Handler": "s_auth.handler",
               "Runtime": "nodejs16.x",
@@ -266,7 +266,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/lesapp-data.zip"
               },
               "Handler": "s_confirmSignUp.handler",
               "Runtime": "nodejs16.x",
@@ -286,7 +286,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/lesapp-data.zip"
               },
               "Handler": "s_save.handler",
               "Runtime": "nodejs16.x",
@@ -306,7 +306,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/lesapp-data.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/lesapp-data.zip"
               },
               "Handler": "s_generateImage.handler",
               "Runtime": "nodejs16.x",
@@ -319,64 +319,64 @@
               "GenerateImageLogGroup"
             ]
           },
-          "SpeakLambdaVersionL2cUEQXmMXwO78QvLDbHyFerTL4svJlh0TCeDmzqE": {
+          "SpeakLambdaVersionAvFcdV0Ch2ixhAJ8SUPRAsItoMDHAN0GL8Vx5KlDkA4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SpeakLambdaFunction"
               },
-              "CodeSha256": "D8I7x/9BmFpl10OX31PxMUvM+0DYNQpyKC20gqDlzB8="
+              "CodeSha256": "N6pCyGQ3mEWb5ZG85fPvcIYXd8jm+c7Q3gRZ50oHo2Y="
             }
           },
-          "GetLambdaVersionRdDGOPrqq8zfmRVweihz5jzqD0wKHAGPA1n3C6Q": {
+          "GetLambdaVersion5KfG7Mk3T41nj47tXmFIe7X1yK6jtUcHWQJX3rhTuIc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetLambdaFunction"
               },
-              "CodeSha256": "D8I7x/9BmFpl10OX31PxMUvM+0DYNQpyKC20gqDlzB8="
+              "CodeSha256": "N6pCyGQ3mEWb5ZG85fPvcIYXd8jm+c7Q3gRZ50oHo2Y="
             }
           },
-          "AuthLambdaVersionKKP3KVQz9ASqLbTFbRQ6rpno9K99GRRRHLykRsN9k": {
+          "AuthLambdaVersion4wO1IUxcGyV2JdMeFAFvdZgNCTyGRP4fQz6PQQjg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthLambdaFunction"
               },
-              "CodeSha256": "D8I7x/9BmFpl10OX31PxMUvM+0DYNQpyKC20gqDlzB8="
+              "CodeSha256": "N6pCyGQ3mEWb5ZG85fPvcIYXd8jm+c7Q3gRZ50oHo2Y="
             }
           },
-          "ConfirmSignUpLambdaVersionDeSH2WZoH0ZuWvaZYX4AxPskS4l6ib6fMt8L9HeUM": {
+          "ConfirmSignUpLambdaVersioncoYfm1NV8sQLUOubbZywEJ34JkcuPrDJxfZYzrD2ldw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ConfirmSignUpLambdaFunction"
               },
-              "CodeSha256": "D8I7x/9BmFpl10OX31PxMUvM+0DYNQpyKC20gqDlzB8="
+              "CodeSha256": "N6pCyGQ3mEWb5ZG85fPvcIYXd8jm+c7Q3gRZ50oHo2Y="
             }
           },
-          "SaveLambdaVersionRWsW2eTVe9gAP7Z0r1EHQjgc7FRVymb3T7dmKRBLI": {
+          "SaveLambdaVersionCWvfiJMFcG7B18GIIErhBjGdoB7O4zThLjcscfNWs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SaveLambdaFunction"
               },
-              "CodeSha256": "D8I7x/9BmFpl10OX31PxMUvM+0DYNQpyKC20gqDlzB8="
+              "CodeSha256": "N6pCyGQ3mEWb5ZG85fPvcIYXd8jm+c7Q3gRZ50oHo2Y="
             }
           },
-          "GenerateImageLambdaVersionrFYhLYbHLLoNfFcgSkGuVd30NlDGahDa5x6sJE4ttVY": {
+          "GenerateImageLambdaVersionrsQKAURqMJW5CjVRlDCYYWnQKDfImCdX9AT6lyQdcM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GenerateImageLambdaFunction"
               },
-              "CodeSha256": "D8I7x/9BmFpl10OX31PxMUvM+0DYNQpyKC20gqDlzB8="
+              "CodeSha256": "N6pCyGQ3mEWb5ZG85fPvcIYXd8jm+c7Q3gRZ50oHo2Y="
             }
           },
           "ApiGatewayRestApi": {
@@ -815,7 +815,7 @@
               "GenerateImageLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1715536638714": {
+          "ApiGatewayDeployment1715548460966": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1091,7 +1091,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z/custom-resources.zip"
+                "S3Key": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z/custom-resources.zip"
               },
               "FunctionName": "lesapp-data-dev-custom-resource-apigw-cw-role",
               "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -1133,7 +1133,7 @@
           "SpeakLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SpeakLambdaVersionL2cUEQXmMXwO78QvLDbHyFerTL4svJlh0TCeDmzqE"
+              "Ref": "SpeakLambdaVersionAvFcdV0Ch2ixhAJ8SUPRAsItoMDHAN0GL8Vx5KlDkA4"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-SpeakLambdaFunctionQualifiedArn"
@@ -1142,7 +1142,7 @@
           "GetLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetLambdaVersionRdDGOPrqq8zfmRVweihz5jzqD0wKHAGPA1n3C6Q"
+              "Ref": "GetLambdaVersion5KfG7Mk3T41nj47tXmFIe7X1yK6jtUcHWQJX3rhTuIc"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-GetLambdaFunctionQualifiedArn"
@@ -1151,7 +1151,7 @@
           "AuthLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthLambdaVersionKKP3KVQz9ASqLbTFbRQ6rpno9K99GRRRHLykRsN9k"
+              "Ref": "AuthLambdaVersion4wO1IUxcGyV2JdMeFAFvdZgNCTyGRP4fQz6PQQjg"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-AuthLambdaFunctionQualifiedArn"
@@ -1160,7 +1160,7 @@
           "ConfirmSignUpLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ConfirmSignUpLambdaVersionDeSH2WZoH0ZuWvaZYX4AxPskS4l6ib6fMt8L9HeUM"
+              "Ref": "ConfirmSignUpLambdaVersioncoYfm1NV8sQLUOubbZywEJ34JkcuPrDJxfZYzrD2ldw"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-ConfirmSignUpLambdaFunctionQualifiedArn"
@@ -1169,7 +1169,7 @@
           "SaveLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SaveLambdaVersionRWsW2eTVe9gAP7Z0r1EHQjgc7FRVymb3T7dmKRBLI"
+              "Ref": "SaveLambdaVersionCWvfiJMFcG7B18GIIErhBjGdoB7O4zThLjcscfNWs"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-SaveLambdaFunctionQualifiedArn"
@@ -1178,7 +1178,7 @@
           "GenerateImageLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GenerateImageLambdaVersionrFYhLYbHLLoNfFcgSkGuVd30NlDGahDa5x6sJE4ttVY"
+              "Ref": "GenerateImageLambdaVersionrsQKAURqMJW5CjVRlDCYYWnQKDfImCdX9AT6lyQdcM"
             },
             "Export": {
               "Name": "sls-lesapp-data-dev-GenerateImageLambdaFunctionQualifiedArn"
@@ -1337,7 +1337,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "SpeakLambdaVersionL2cUEQXmMXwO78QvLDbHyFerTL4svJlh0TCeDmzqE"
+        "versionLogicalId": "SpeakLambdaVersionAvFcdV0Ch2ixhAJ8SUPRAsItoMDHAN0GL8Vx5KlDkA4"
       },
       "get": {
         "handler": "s_get.handler",
@@ -1373,7 +1373,7 @@
         "memory": 1024,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "GetLambdaVersionRdDGOPrqq8zfmRVweihz5jzqD0wKHAGPA1n3C6Q"
+        "versionLogicalId": "GetLambdaVersion5KfG7Mk3T41nj47tXmFIe7X1yK6jtUcHWQJX3rhTuIc"
       },
       "auth": {
         "handler": "s_auth.handler",
@@ -1384,7 +1384,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "AuthLambdaVersionKKP3KVQz9ASqLbTFbRQ6rpno9K99GRRRHLykRsN9k"
+        "versionLogicalId": "AuthLambdaVersion4wO1IUxcGyV2JdMeFAFvdZgNCTyGRP4fQz6PQQjg"
       },
       "confirmSignUp": {
         "handler": "s_confirmSignUp.handler",
@@ -1395,7 +1395,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "ConfirmSignUpLambdaVersionDeSH2WZoH0ZuWvaZYX4AxPskS4l6ib6fMt8L9HeUM"
+        "versionLogicalId": "ConfirmSignUpLambdaVersioncoYfm1NV8sQLUOubbZywEJ34JkcuPrDJxfZYzrD2ldw"
       },
       "save": {
         "handler": "s_save.handler",
@@ -1431,7 +1431,7 @@
         "memory": 1024,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "SaveLambdaVersionRWsW2eTVe9gAP7Z0r1EHQjgc7FRVymb3T7dmKRBLI"
+        "versionLogicalId": "SaveLambdaVersionCWvfiJMFcG7B18GIIErhBjGdoB7O4zThLjcscfNWs"
       },
       "generateImage": {
         "handler": "s_generateImage.handler",
@@ -1467,7 +1467,7 @@
         "memory": 1024,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "GenerateImageLambdaVersionrFYhLYbHLLoNfFcgSkGuVd30NlDGahDa5x6sJE4ttVY"
+        "versionLogicalId": "GenerateImageLambdaVersionrsQKAURqMJW5CjVRlDCYYWnQKDfImCdX9AT6lyQdcM"
       }
     },
     "configValidationMode": "warn",
@@ -1496,7 +1496,7 @@
     "artifact": "/home/alexanderg/lesapp-data/.serverless/lesapp-data.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/lesapp-data/dev/1715536644896-2024-05-12T17:57:24.896Z",
+    "artifactDirectoryName": "serverless/lesapp-data/dev/1715548466909-2024-05-12T21:14:26.909Z",
     "artifact": "lesapp-data.zip"
   }
 }
