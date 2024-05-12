@@ -56,7 +56,16 @@ functions:
           path: listen
           method: post
           cors: true
-          
+
+  delete:
+    handler: handler.delete
+    timeout: 15
+    events:
+      - http:
+          path: delete
+          method: post
+          cors: true
+
 
   generateImage:
     handler: handler.generateImage
