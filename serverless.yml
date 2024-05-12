@@ -75,3 +75,12 @@ functions:
           path: generate-image
           method: post
           cors: true
+
+  createtextkey:
+    handler: handler.createtextkey
+    timeout: 15
+    events:
+      - http:
+          path: createtextkey
+          method: post
+          cors: true

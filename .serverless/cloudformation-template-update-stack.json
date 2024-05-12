@@ -107,6 +107,12 @@
         "LogGroupName": "/aws/lambda/lesapp-data-dev-listen"
       }
     },
+    "DeleteLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/lesapp-data-dev-delete"
+      }
+    },
     "GenerateImageLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
@@ -183,6 +189,12 @@
                     },
                     {
                       "Fn::GetAtt": [
+                        "DeleteLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
                         "GenerateImageLogGroup",
                         "Arn"
                       ]
@@ -202,7 +214,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_speak.handler",
         "Runtime": "nodejs16.x",
@@ -222,7 +234,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_get.handler",
         "Runtime": "nodejs16.x",
@@ -242,7 +254,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_auth.handler",
         "Runtime": "nodejs16.x",
@@ -262,7 +274,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_confirmSignUp.handler",
         "Runtime": "nodejs16.x",
@@ -282,7 +294,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_save.handler",
         "Runtime": "nodejs16.x",
@@ -302,7 +314,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_listen.handler",
         "Runtime": "nodejs16.x",
@@ -315,6 +327,26 @@
         "ListenLogGroup"
       ]
     },
+    "DeleteLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
+        },
+        "Handler": "s_delete.handler",
+        "Runtime": "nodejs16.x",
+        "FunctionName": "lesapp-data-dev-delete",
+        "MemorySize": 1024,
+        "Timeout": 15,
+        "Role": "arn:aws:iam::797132616636:role/Lesapp-Admin-Role"
+      },
+      "DependsOn": [
+        "DeleteLogGroup"
+      ]
+    },
     "GenerateImageLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -322,7 +354,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/lesapp-data.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/lesapp-data.zip"
         },
         "Handler": "s_generateImage.handler",
         "Runtime": "nodejs16.x",
@@ -335,74 +367,84 @@
         "GenerateImageLogGroup"
       ]
     },
-    "SpeakLambdaVersionmntdYr8NLM5v3f8D0vhRE2RTxXypbjkm8Q104tpU": {
+    "SpeakLambdaVersionNMLKffirzV2UVN4LfPa0O0DXSW2via3UAN746MCgQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SpeakLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
-    "GetLambdaVersion8FXKHzKubagC76Oa26EtUVc81IOP38bzI8WKmWK0": {
+    "GetLambdaVersionSZiq0qAo3wsS168ywuUrntGBcOCH2eGiPHlTPxxQM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
-    "AuthLambdaVersiongTjqTuCwka7LXUKNhxNl67GbJUoqtBU5jc98ciuYR8": {
+    "AuthLambdaVersionxxWGI6z91y6gq6bo3XyYKqHPcVVN9JSS0CS3DvUlLVU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
-    "ConfirmSignUpLambdaVersionXC9ubqk6QwQHGvVRbuucHbdVew6BaK8kxc9Pn8fJ0E": {
+    "ConfirmSignUpLambdaVersionshdhjg8RX5wo36ELMExb36aPDbeWJ17J34VdCHcnE": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ConfirmSignUpLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
-    "SaveLambdaVersion8M80lf3jWJiJA0nXyf29ybhxnypnmyaaBlcPyOT5fQ": {
+    "SaveLambdaVersionei25ORSfjdcBSnyPFkw2aHSIp7ktTGcHVH1R7PwDPps": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SaveLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
-    "ListenLambdaVersionzejGgelwlbJU6JPqunD43SCSTQOx8nPFqYdQroZbd4": {
+    "ListenLambdaVersionA3D0S55HRUMPQCwInuvuUG66qNm8DSVZddUs3QKw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ListenLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
-    "GenerateImageLambdaVersionwDZsMsdBBnHprrTJ8UevVFCjpcwF5GUmdlfkccREAy4": {
+    "DeleteLambdaVersion2WSZGmDmE6UV2INQfVO2crYfzJ3VMyteiNZx43tr7Y": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "DeleteLambdaFunction"
+        },
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
+      }
+    },
+    "GenerateImageLambdaVersiondoDylXLdvt9x8wBluUu8v6KwfV05hC3eSuognWcTsdI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GenerateImageLambdaFunction"
         },
-        "CodeSha256": "1YCtLBtlRyLuOvjyTIlBMQZUDkL5LGsM4qVMOwbfuxU="
+        "CodeSha256": "y9usNuOGqCIybUZIjGPvmh2DgTQGr9sdwSNaXdvRYeE="
       }
     },
     "ApiGatewayRestApi": {
@@ -472,6 +514,21 @@
           ]
         },
         "PathPart": "listen",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceDelete": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "delete",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -666,6 +723,51 @@
         },
         "ResourceId": {
           "Ref": "ApiGatewayResourceListen"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodDeleteOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDelete"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -901,6 +1003,52 @@
         "ListenLambdaPermissionApiGateway"
       ]
     },
+    "ApiGatewayMethodDeletePost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceDelete"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DeleteLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "DeleteLambdaPermissionApiGateway"
+      ]
+    },
     "ApiGatewayMethodGenerateDashimagePost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -947,7 +1095,7 @@
         "GenerateImageLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1715548900674": {
+    "ApiGatewayDeployment1715550986091": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -960,11 +1108,13 @@
         "ApiGatewayMethodGetOptions",
         "ApiGatewayMethodSaveOptions",
         "ApiGatewayMethodListenOptions",
+        "ApiGatewayMethodDeleteOptions",
         "ApiGatewayMethodGenerateDashimageOptions",
         "ApiGatewayMethodSpeakPost",
         "ApiGatewayMethodGetGet",
         "ApiGatewayMethodSavePost",
         "ApiGatewayMethodListenPost",
+        "ApiGatewayMethodDeletePost",
         "ApiGatewayMethodGenerateDashimagePost"
       ]
     },
@@ -1085,6 +1235,43 @@
         "FunctionName": {
           "Fn::GetAtt": [
             "ListenLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DeleteLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DeleteLambdaFunction",
             "Arn"
           ]
         },
@@ -1262,7 +1449,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lesapp-data/dev/1715548907151-2024-05-12T21:21:47.151Z/custom-resources.zip"
+          "S3Key": "serverless/lesapp-data/dev/1715550992475-2024-05-12T21:56:32.475Z/custom-resources.zip"
         },
         "FunctionName": "lesapp-data-dev-custom-resource-apigw-cw-role",
         "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -1304,7 +1491,7 @@
     "SpeakLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SpeakLambdaVersionmntdYr8NLM5v3f8D0vhRE2RTxXypbjkm8Q104tpU"
+        "Ref": "SpeakLambdaVersionNMLKffirzV2UVN4LfPa0O0DXSW2via3UAN746MCgQ"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-SpeakLambdaFunctionQualifiedArn"
@@ -1313,7 +1500,7 @@
     "GetLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetLambdaVersion8FXKHzKubagC76Oa26EtUVc81IOP38bzI8WKmWK0"
+        "Ref": "GetLambdaVersionSZiq0qAo3wsS168ywuUrntGBcOCH2eGiPHlTPxxQM"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-GetLambdaFunctionQualifiedArn"
@@ -1322,7 +1509,7 @@
     "AuthLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthLambdaVersiongTjqTuCwka7LXUKNhxNl67GbJUoqtBU5jc98ciuYR8"
+        "Ref": "AuthLambdaVersionxxWGI6z91y6gq6bo3XyYKqHPcVVN9JSS0CS3DvUlLVU"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-AuthLambdaFunctionQualifiedArn"
@@ -1331,7 +1518,7 @@
     "ConfirmSignUpLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ConfirmSignUpLambdaVersionXC9ubqk6QwQHGvVRbuucHbdVew6BaK8kxc9Pn8fJ0E"
+        "Ref": "ConfirmSignUpLambdaVersionshdhjg8RX5wo36ELMExb36aPDbeWJ17J34VdCHcnE"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-ConfirmSignUpLambdaFunctionQualifiedArn"
@@ -1340,7 +1527,7 @@
     "SaveLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SaveLambdaVersion8M80lf3jWJiJA0nXyf29ybhxnypnmyaaBlcPyOT5fQ"
+        "Ref": "SaveLambdaVersionei25ORSfjdcBSnyPFkw2aHSIp7ktTGcHVH1R7PwDPps"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-SaveLambdaFunctionQualifiedArn"
@@ -1349,16 +1536,25 @@
     "ListenLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ListenLambdaVersionzejGgelwlbJU6JPqunD43SCSTQOx8nPFqYdQroZbd4"
+        "Ref": "ListenLambdaVersionA3D0S55HRUMPQCwInuvuUG66qNm8DSVZddUs3QKw"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-ListenLambdaFunctionQualifiedArn"
       }
     },
+    "DeleteLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "DeleteLambdaVersion2WSZGmDmE6UV2INQfVO2crYfzJ3VMyteiNZx43tr7Y"
+      },
+      "Export": {
+        "Name": "sls-lesapp-data-dev-DeleteLambdaFunctionQualifiedArn"
+      }
+    },
     "GenerateImageLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GenerateImageLambdaVersionwDZsMsdBBnHprrTJ8UevVFCjpcwF5GUmdlfkccREAy4"
+        "Ref": "GenerateImageLambdaVersiondoDylXLdvt9x8wBluUu8v6KwfV05hC3eSuognWcTsdI"
       },
       "Export": {
         "Name": "sls-lesapp-data-dev-GenerateImageLambdaFunctionQualifiedArn"
