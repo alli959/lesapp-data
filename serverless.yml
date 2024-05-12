@@ -7,7 +7,7 @@ provider:
   name: aws
   runtime: nodejs16.x
   region: eu-west-1
-  profile: lesapp-admin
+  profile: Lesapp-Admin-Role
   iam:
     role: arn:aws:iam::797132616636:role/Lesapp-Admin-Role
     
